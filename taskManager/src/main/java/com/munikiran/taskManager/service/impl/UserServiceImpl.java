@@ -2,10 +2,13 @@ package com.munikiran.taskManager.service.impl;
 
 import com.munikiran.taskManager.dto.userDTO.UserAddDTO;
 import com.munikiran.taskManager.dto.userDTO.UserDTO;
-import com.munikiran.taskManager.model.Task;
+import com.munikiran.taskManager.dto.userDTO.UserUpdateDTO;
+import com.munikiran.taskManager.exception.ResourceNotFoundException;
+import com.munikiran.taskManager.exception.UserAlreadyExistsException;
 import com.munikiran.taskManager.model.User;
 import com.munikiran.taskManager.repository.UserRepository;
 import com.munikiran.taskManager.service.UserService;
+import com.munikiran.taskManager.utils.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +27,6 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userAddDTO.getUsername());
         user.setEmail(userAddDTO.getEmail());
         user.setPassword(userAddDTO.getPassword());
-        user.setRole(Role.valueOf(String.valueOf(userAddDTO.getRole())));
 
         return mapToDTO(userRepository.save(user));
     }
@@ -43,7 +45,6 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException("Email already registered");
         }
         user.setEmail(userUpdateDTO.getEmail());
-        user.setRole(userUpdateDTO.getRole());
         user.setUsername(userUpdateDTO.getUsername());
         return mapToDTO(userRepository.save(user));
     }
@@ -68,6 +69,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDTO mapToDTO(User user) {
-        return  new UserDTO(user.getId(), user.getUsername(), user.getEmail());
+        return UserMapper.toDTO(user);
     }
 }
