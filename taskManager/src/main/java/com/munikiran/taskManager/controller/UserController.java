@@ -20,7 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/register")
     public ResponseEntity<ApiResponseDTO> addUser(@RequestBody @Valid UserAddDTO userAddDTO) {
         UserDTO user = userService.addUser(userAddDTO);
         return  ResponseEntity.status(HttpStatus.CREATED).body(
